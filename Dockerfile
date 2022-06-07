@@ -5,7 +5,7 @@ WORKDIR /home/gradle/src
 RUN gradle assemble
 
 FROM openjdk:17-oracle
-EXPOSE 8080
+EXPOSE 8083
 RUN mkdir /app
 COPY --from=build /home/gradle/src/build/libs/*.jar /app/posts-api.jar
 ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=production", "/app/posts-api.jar"]

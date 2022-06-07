@@ -4,9 +4,11 @@ import com.dtos.PostDTO;
 import com.models.Post;
 import com.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,8 +25,8 @@ public class PostController {
     }
 
     @GetMapping("/getUserPosts/{id}")
-    public ResponseEntity<List<Post>> getUserPosts(@PathVariable UUID id){
-        return ResponseEntity.ok(postService.getAllUserPosts(id));
+    public ResponseEntity<Page<Post>> getUserPosts(@PathVariable UUID id, @RequestParam(defaultValue = "20") Integer pageSize){
+        return ResponseEntity.ok(postService.getAllUserPosts(id, pageSize));
     }
 
     @GetMapping("/getPost/{id}")

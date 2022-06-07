@@ -4,8 +4,12 @@ import com.dtos.PostDTO;
 import com.models.Post;
 import com.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,8 +27,9 @@ public class PostService {
 
     }
 
-    public List<Post> getAllUserPosts(UUID id) {
-        return postRepository.findAllByAuthor(id);
+    public Page<Post> getAllUserPosts(UUID id, Integer pageSize) {
+        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
+        return postRepository.findAllByAuthor(id, pageable);
     }
 
     public Post getPost(UUID id) {
