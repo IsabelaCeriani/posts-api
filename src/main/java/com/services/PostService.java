@@ -27,9 +27,9 @@ public class PostService {
 
     }
 
-    public Page<Post> getAllUserPosts(UUID id, Integer pageSize) {
-        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
-        return postRepository.findAllByAuthor(id, pageable);
+    public List<Post> getAllUserPosts(UUID id, Integer pageSize) {
+//        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
+        return postRepository.findAllByAuthor(id);
     }
 
     public Post getPost(UUID id) {
