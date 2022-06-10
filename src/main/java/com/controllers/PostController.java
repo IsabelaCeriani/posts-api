@@ -24,10 +24,10 @@ public class PostController {
         return ResponseEntity.ok(postService.addPost(postDTO));
     }
 
-//    @GetMapping("/getUserPosts/{id}")
-//    public ResponseEntity<Page<Post>> getUserPosts(@PathVariable UUID id, @RequestParam(defaultValue = "20") Integer pageSize){
-//        return ResponseEntity.ok(postService.getAllUserPosts(id, pageSize));
-//    }
+    @GetMapping("/getUserPosts/{id}")
+    public ResponseEntity<Page<Post>> getUserPosts(@PathVariable UUID id){
+        return ResponseEntity.ok(postService.getAllUserPosts(id));
+    }
 
     @GetMapping("/getPost/{id}")
     public ResponseEntity<Post> getPost(@PathVariable UUID id){

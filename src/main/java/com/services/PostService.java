@@ -6,6 +6,7 @@ import com.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,9 @@ public class PostService {
 
     }
 
-    public List<Post> getAllUserPosts(UUID id, Integer pageSize) {
-//        Pageable pageable = (Pageable) PageRequest.of(0, pageSize);
-        return postRepository.findAllByAuthor(id);
+    public Page<Post> getAllUserPosts(UUID id) {
+        List<Post> postsList = postRepository.findAllByAuthor(id);
+        return new PageImpl<Post>(postsList);
     }
 
     public Post getPost(UUID id) {
