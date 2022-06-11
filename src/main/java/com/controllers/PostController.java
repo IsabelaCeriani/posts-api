@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,5 +38,16 @@ public class PostController {
     @DeleteMapping("/deletePost/{id}")
     public ResponseEntity<Post> deletePost(@PathVariable UUID id){
         return ResponseEntity.ok(postService.deletePost(id));
+    }
+
+
+    @GetMapping("getFeedPosts/{id}")
+    public ResponseEntity<Page<Post>> getFeedPosts(@PathVariable UUID id) throws Exception {
+        return ResponseEntity.ok(postService.getFeedPosts(id, new Date()));
+    }
+
+    @PostMapping("answerPost/{parentId}")
+    public ResponseEntity<Post> answerPost(@PathVariable UUID parentId, @RequestBody PostDTO postDTO) throws Exception {
+        return ResponseEntity.ok(postService.answerPost(parentId, postDTO));
     }
 }
