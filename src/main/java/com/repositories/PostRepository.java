@@ -18,5 +18,14 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
 
     Optional<Post> findByAuthorAndCreatedAtAfter(UUID author, Date createdAt);
 
+    List<Post> findByAuthor(UUID author);
+
+
+
+
+
+
+
+
 
 }

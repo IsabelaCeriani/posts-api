@@ -17,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,30 +75,21 @@ public class PostService {
 
 
 
-    public Page<Post> getFeedPosts(UUID id, Date timeThreshHold) throws Exception {
+    public Page<Post> getFeedPosts(UUID id, LocalDateTime timeThreshHold) throws Exception {
 //        RestResponsePage followingUsersId = followApi.get().uri("follows/getFollowing/" + id).retrieve().toEntity(RestResponsePage.class);
 //        System.out.println(followingUsersId.);
 //
         String uri = String.format("http://localhost:8089/follows/getFollowingList/%s", id);
         RestTemplate restTemplate  = new RestTemplate();
-        List<UUID> followingUsersId = restTemplate.getForObject(uri, List.class);
-        System.out.println(followingUsersId.get(0));
-        if(followingUsersId==null) throw new Exception("List of following users in getFeedPosts is null");
+        List<String> followingUsersId = restTemplate.getForObject(uri, List.class);
 
 
-        List<Post> feed = new ArrayList<>();
-            followingUsersId.stream()
-                .map(userId -> postRepository.findByAuthorAndCreatedAtAfter(id, timeThreshHold)
-                .orElseThrow(()-> new IllegalArgumentException("Username not found")));
 
-//         List<Post> feedPosts = (List<Post>) followingUsersId
-//                .stream().map(userId ->postRepository.findById((UUID) userId)
-//                .orElseThrow(()-> new RuntimeException("Username not found")))
-//                .collect(Collectors.toList())
-//                .stream()
-//                .sorted(Comparator.comparing(Post::getCreatedAt))
-//                .filter(post-> post.getCreatedAt().after(timeThreshHold))
-//                .collect(Collectors.toList());
+         List<Post> feed =  followingUsersId.parallelStream().flatMap(userId -> new ArrayList<>(postRepository.findByAuthor(UUID.fromString(userId)))
+                         .parallelStream()
+                         .sorted(Comparator.comparing(Post::getCreatedAt))
+                         .filter(post-> post.getCreatedAt().isAfter(timeThreshHold)))
+                            .collect(Collectors.toList());
 
         return new PageImpl<>(feed);
     }

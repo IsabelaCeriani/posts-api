@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -41,9 +44,9 @@ public class PostController {
     }
 
 
-    @GetMapping("getFeedPosts/{id}")
-    public ResponseEntity<Page<Post>> getFeedPosts(@PathVariable UUID id) throws Exception {
-        return ResponseEntity.ok(postService.getFeedPosts(id, new Date()));
+    @GetMapping("getFeedPosts/{id}/{dateStr}")
+    public ResponseEntity<Page<Post>> getFeedPosts(@PathVariable UUID id,@PathVariable String dateStr) throws Exception {
+        return ResponseEntity.ok(postService.getFeedPosts(id, LocalDateTime.parse(dateStr)));
     }
 
     @PostMapping("answerPost/{parentId}")
