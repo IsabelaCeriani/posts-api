@@ -2,13 +2,19 @@ package com.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.type.LocalDateTimeType;
+import org.springframework.data.domain.Page;
+
 import javax.persistence.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.PrePersist;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -24,9 +30,11 @@ public class Post {
 
     private UUID author;
     private String content;
-    private UUID parentPost;
 
-    private Date createdAt;
+    @OneToMany
+    private List<Post> threadAnswers;
+
+    private LocalDateTime createdAt;
 
     private int likes;
 
@@ -37,16 +45,16 @@ public class Post {
 
     }
 
-    public Post(UUID author, String content, UUID parentPost) {
+    public Post(UUID author, String content, List<Post> threadAnswers) {
         this.author = author;
         this.content = content;
-        this.parentPost = parentPost;
+        this.threadAnswers = threadAnswers;
         this.likes = 0;
     }
 
     @PrePersist
     protected void onCreate() {
-        createdAt = new Date();
+        createdAt = LocalDateTime.now();
     }
 
 }
