@@ -7,3 +7,8 @@
 4. run "docker compose up" command in intelli terminal
 
 **Note:** A server in port 5434 is needed. 
+
+
+### Swagger 
+* http://localhost:8083/swagger-ui/
+* http://localhost:8083/swagger-ui/#/post-controller
