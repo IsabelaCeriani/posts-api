@@ -75,7 +75,7 @@ public class PostService {
 
 
 
-    public Page<Post> getFeedPosts(UUID id, LocalDateTime timeThreshHold) throws Exception {
+    public Page<Post> getFeedPosts(UUID id) throws Exception {
 //        RestResponsePage followingUsersId = followApi.get().uri("follows/getFollowing/" + id).retrieve().toEntity(RestResponsePage.class);
 //        System.out.println(followingUsersId.);
 //
@@ -87,10 +87,8 @@ public class PostService {
 
          List<Post> feed =  followingUsersId.parallelStream().flatMap(userId -> new ArrayList<>(postRepository.findByAuthor(UUID.fromString(userId)))
                          .parallelStream()
-                         .sorted(Comparator.comparing(Post::getCreatedAt))
-                         .filter(post-> post.getCreatedAt().isAfter(timeThreshHold)))
-                            .collect(Collectors.toList());
-
+                         .sorted(Comparator.comparing(Post::getCreatedAt)))
+                         .collect(Collectors.toList());
         return new PageImpl<>(feed);
     }
 

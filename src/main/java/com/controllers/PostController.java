@@ -44,9 +44,9 @@ public class PostController {
     }
 
 
-    @GetMapping("getFeedPosts/{id}/{dateStr}")
-    public ResponseEntity<Page<Post>> getFeedPosts(@PathVariable UUID id,@PathVariable String dateStr) throws Exception {
-        return ResponseEntity.ok(postService.getFeedPosts(id, LocalDateTime.parse(dateStr)));
+    @GetMapping("getFeedPosts/{id}")
+    public ResponseEntity<Page<Post>> getFeedPosts(@PathVariable UUID id) throws Exception {
+        return ResponseEntity.ok(postService.getFeedPosts(id));
     }
 
     @PostMapping("answerPost/{parentId}")
