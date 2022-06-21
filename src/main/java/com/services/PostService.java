@@ -84,7 +84,8 @@ public class PostService {
         RestTemplate restTemplate  = new RestTemplate();
         List<String> followingUsersId = restTemplate.getForObject(uri, List.class);
 
-         List<Post> feed =  followingUsersId.parallelStream().flatMap(userId -> new ArrayList<>(postRepository.findByAuthor(UUID.fromString(userId)))
+        if(followingUsersId == null) throw new Exception("Null returned from follows service");
+        List<Post> feed =  followingUsersId.parallelStream().flatMap(userId -> new ArrayList<>(postRepository.findByAuthor(UUID.fromString(userId)))
                          .parallelStream()
                          .sorted(Comparator.comparing(Post::getCreatedAt)))
                          .collect(Collectors.toList());
