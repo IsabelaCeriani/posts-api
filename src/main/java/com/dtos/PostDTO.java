@@ -17,6 +17,8 @@ public class PostDTO {
     private UUID parentPost;
 
 
+    public PostDTO(){}
+
     public Post toPost(){
         return new Post(author, content, parentPost);
     }
