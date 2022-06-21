@@ -7,6 +7,6 @@ public class WebClientConfig {
 
     @Bean
     public WebClient followApi() {
-        return WebClient.create("http://localhost:8087");
+        return WebClient.create("http://localhost:8080");
     }
 }
