@@ -53,4 +53,9 @@ public class PostController {
     public ResponseEntity<Post> answerPost(@PathVariable UUID parentId, @RequestBody PostDTO postDTO) throws Exception {
         return ResponseEntity.ok(postService.answerPost(parentId, postDTO));
     }
+
+    @GetMapping("getAllPosts/")
+    public ResponseEntity<Page<Post>> getAllPosts() throws Exception {
+        return ResponseEntity.ok(postService.getAllPosts());
+    }
 }

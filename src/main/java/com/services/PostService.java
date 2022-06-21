@@ -100,4 +100,8 @@ public class PostService {
         postRepository.save(parentPost);
         return parentPost;
     }
+
+    public Page<Post> getAllPosts() {
+        return new PageImpl<>(postRepository.findAll());
+    }
 }
