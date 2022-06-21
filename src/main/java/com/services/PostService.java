@@ -19,6 +19,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -79,11 +80,9 @@ public class PostService {
 //        RestResponsePage followingUsersId = followApi.get().uri("follows/getFollowing/" + id).retrieve().toEntity(RestResponsePage.class);
 //        System.out.println(followingUsersId.);
 //
-        String uri = String.format("http://localhost:8089/follows/getFollowingList/%s", id);
+        String uri = String.format("http://localhost:8080/follows/getFollowingList/%s", id);
         RestTemplate restTemplate  = new RestTemplate();
         List<String> followingUsersId = restTemplate.getForObject(uri, List.class);
-
-
 
          List<Post> feed =  followingUsersId.parallelStream().flatMap(userId -> new ArrayList<>(postRepository.findByAuthor(UUID.fromString(userId)))
                          .parallelStream()
