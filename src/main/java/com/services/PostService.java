@@ -35,6 +35,9 @@ public class PostService {
 
     private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(7);
 
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
+
+
 
     @Bean
     public WebClient followApi() {
@@ -45,6 +48,7 @@ public class PostService {
     public Post addPost(PostDTO postDTO) {
         Post post = postDTO.toPost();
         postRepository.save(post);
+        logger.info("Added post: " + post.getId());
         return post;
 
     }
@@ -61,16 +65,19 @@ public class PostService {
 
     public Page<Post> getAllUserPosts(UUID id) {
         List<Post> postsList = postRepository.findAllByAuthor(id);
+        logger.info("Return of users posts, size =" + postsList.size());
         return new PageImpl<Post>(postsList);
     }
 
     public Post getPost(UUID id) {
+        logger.info("get_post=" + id);
         return postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No post with given id"));
     }
 
     public Post deletePost(UUID id) {
         Post post = getPost(id);
         postRepository.delete(post);
+        logger.info("post_deleted=" + id);
         return post;
     }
 
@@ -89,6 +96,8 @@ public class PostService {
                          .parallelStream()
                          .sorted(Comparator.comparing(Post::getCreatedAt)))
                          .collect(Collectors.toList());
+
+        logger.info(String.format("Return of feed posts, size =%s", feed.size()));
         return new PageImpl<>(feed);
     }
 
@@ -98,6 +107,7 @@ public class PostService {
         Post parentPost = postRepository.findById(parentId).orElseThrow(() -> new IllegalArgumentException("Could not find Post with given \"parentId\" "));
         parentPost.getThreadAnswers().add(newPost);
         postRepository.save(parentPost);
+        logger.info(String.format("Added answer to post: %s", newPost.getId()));
         return parentPost;
     }
 
