@@ -64,6 +64,7 @@ jobs:
           key: ${{ secrets.DEV_KEY }}
           script: |
             cd Backend
+            git checkout origin/develop
             sudo docker-compose stop posts-api
             sudo docker-compose pull posts-api
             sudo docker-compose up -d posts-api
