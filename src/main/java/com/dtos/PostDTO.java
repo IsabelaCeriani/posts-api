@@ -17,6 +17,8 @@ public class PostDTO {
     private String content;
 
 
+    public PostDTO(){}
+
     public Post toPost(){
         return new Post(author, content, new ArrayList<>());
     }
